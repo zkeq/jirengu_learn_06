@@ -16,7 +16,11 @@ function undo_draw() {
         now_index--;
         var last_draw = draw_history[now_index -1];
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.putImageData(last_draw, 0, 0);
+        try {
+            ctx.putImageData(last_draw, 0, 0);
+        } catch (e) {
+            console.log("当前已是首步，无法再撤销")
+     }
     }
     else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
