@@ -11,9 +11,9 @@ function save_draw() {
 }
 
 function undo_draw() {
-    if (draw_history.length > 0) {
-        redo_history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        var last_draw = draw_history.pop();
+    if (draw_history.length > 0 && now_index > 0) {
+        now_index--;
+        var last_draw = draw_history[now_index -1];
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.putImageData(last_draw, 0, 0);
     }
@@ -23,15 +23,21 @@ function undo_draw() {
 }
 
 function redo_draw() {
-    if (redo_history.length > 0) {
-        var last_draw = redo_history.pop();
+    if (now_index < draw_history.length) {
+        now_index++;
+        var last_draw = draw_history[now_index - 1];
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.putImageData(last_draw, 0, 0);
-        draw_history.push(last_draw);
     }
-    else {
-        console.log("no redo");
-    }
+    // if (redo_history.length > 0) {
+    //     var last_draw = redo_history.pop();
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //     ctx.putImageData(last_draw, 0, 0);
+    //     draw_history.push(last_draw);
+    // }
+    // else {
+    //     console.log("no redo");
+    // }
 }
 
 function change_color(color) {
@@ -40,7 +46,8 @@ function change_color(color) {
 }
 
 draw_history = [];
-redo_history = [];
+index_history = [];
+let now_index = 0;
 
 // 画线
 let canvas = document.getElementById('canvas');
@@ -75,7 +82,6 @@ console.log("当前使用的设备是手机")
         if (isfrist) {
             let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
             draw_history.push(now_pic);
-            redo_history.push(now_pic);
             isfrist = false;
         }
         // 手机上可能不止一个手指
@@ -105,8 +111,18 @@ canvas.onmousedown = (e) => {
 canvas.onmousemove = (e) => {
     if (isfrist) {
         let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        if (draw_history.length > now_index) {
+            draw_history.splice(now_index, draw_history.length - now_index);
+        }
         draw_history.push(now_pic);
-        redo_history.push(now_pic);
+        if (index_history.length !== 0) {
+            index_history.push(now_index);
+            console.log("+++++");
+            now_index++;
+        }
+        else {
+            index_history.push(0);
+        }
         isfrist = false;
     }
     if (painting === true) {
