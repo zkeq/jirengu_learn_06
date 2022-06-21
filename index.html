@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画板</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://npm.elemecdn.com/current-device/umd/current-device.min.js"></script>
  </head>
  <body>
     <canvas id="canvas"></canvas>
@@ -16,7 +17,22 @@
         canvas.height = document.documentElement.clientHeight;
         let ctx = canvas.getContext('2d');
         let painting = false;
-
+        var palt = device.mobile();
+        if (palt) {
+        console.log("当前使用的设备是手机")
+            canvas.ontouchmove = (e) => {
+                // 手机上可能不止一个手指
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2, false);
+                ctx.stroke();
+                ctx.fill();
+            }
+        
+        } else {
+        console.log("当前使用的设备是电脑")
+        
         ctx.fillStyle = 'black';
         ctx.strokeStyle = 'none';
 
@@ -29,8 +45,8 @@
                 // ctx.fillRect(e.clientX - 5 , e.clientY - 5, 10, 10);
                 ctx.beginPath();
                 ctx.arc(e.clientX, e.clientY, 5, 0, Math.PI * 2, false);
+                ctx.stroke();
                 ctx.fill();
-                // ctx.stroke();
             } else {
                 console.log("not painting");
             }
@@ -40,6 +56,8 @@
         canvas.onmouseup = () => {
             painting = false;
         };
+        
+        }
     </script>
  </body>
  </html>
