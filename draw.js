@@ -85,7 +85,8 @@ console.log("当前使用的设备是手机")
     canvas.ontouchend = (e) => {
         // 手机上可能不止一个手指
         isfrist = true;
-        redo_history.splice(0,redo_history.length);
+        // 手机端容易误触，不要这个了
+        // redo_history.splice(0,redo_history.length);
     }
 
 } else {
@@ -117,7 +118,8 @@ canvas.onmousemove = (e) => {
 canvas.onmouseup = () => {
     painting = false;
     isfrist = true;
-    redo_history.splice(0,redo_history.length);
+    // 容易误触 不要这个了
+    // redo_history.splice(0,redo_history.length);
 };
 
 }
