@@ -17,7 +17,7 @@
         canvas.height = document.documentElement.clientHeight;
         let ctx = canvas.getContext('2d');
         let painting = false;
-        var palt = device.mobile();
+        var palt = device.mobile() || device.tablet();
 
         function drawLine(x1, y1, x2, y2) {
             ctx.beginPath();
