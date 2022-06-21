@@ -12,10 +12,10 @@ function save_draw() {
 
 function undo_draw() {
     if (draw_history.length > 0) {
+        redo_history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         var last_draw = draw_history.pop();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.putImageData(last_draw, 0, 0);
-        redo_history.push(last_draw);
     }
     else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -73,7 +73,9 @@ console.log("当前使用的设备是手机")
     }
     canvas.ontouchmove = (e) => {
         if (isfrist) {
-            draw_history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            draw_history.push(now_pic);
+            redo_history.push(now_pic);
             isfrist = false;
         }
         // 手机上可能不止一个手指
@@ -102,7 +104,9 @@ canvas.onmousedown = (e) => {
 
 canvas.onmousemove = (e) => {
     if (isfrist) {
-        draw_history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        draw_history.push(now_pic);
+        redo_history.push(now_pic);
         isfrist = false;
     }
     if (painting === true) {
