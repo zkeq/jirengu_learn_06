@@ -7,11 +7,12 @@
     <title>画板</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://npm.elemecdn.com/current-device/umd/current-device.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
  </head>
  <body>
     <div class="main">
     <div class="menu">
-        <input type="color" name="bgColor" class="btn"/>
+        <input type="color" class="btn" onchange="change_color(this.value)"/>
         <button class="btn" onclick="clear_draw()">清空</button>
         <button class="btn" onclick="save_draw()">保存</button>
         <button class="btn" onclick="undo_draw()">撤销</button>
