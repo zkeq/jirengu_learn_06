@@ -14,3 +14,32 @@
 body {
     overflow: hidden;
 }
+.menu {
+    position: fixed;
+    margin-left: 20px;
+    margin-top: 50vh;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+}
+.btn {
+    margin-bottom: 10px;
+    width: 50px;
+    height: 30px;
+}
+.main {
+    /* border: 10px solid red; */
+    
+}
+button {
+    border: 0 none;
+    /* background: #5B88ED; */
+    border-radius: 10px;
+    outline: none;
+}
+
+/*取消button点击的默认样式*/
+button:focus {
+    border: 0 none;
+    outline: none;
+}
