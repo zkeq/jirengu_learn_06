@@ -11,6 +11,7 @@ function save_draw() {
 }
 
 function undo_draw() {
+    // console.log('clicked undo')
     if (draw_history.length > 0 && now_index > 0) {
         now_index--;
         var last_draw = draw_history[now_index -1];
@@ -32,16 +33,16 @@ function redo_draw() {
     // if (redo_history.length > 0) {
     //     var last_draw = redo_history.pop();
     //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     ctx.putImageData(last_draw, 0, 0);
+    //     ctx.putImageData(last_draw, 0, 0);z
     //     draw_history.push(last_draw);
     // }
     // else {
-    //     console.log("no redo");
+    //     console.log("no redo");ndo
     // }
 }
 
 function change_color(color) {
-    console.log("color changed to " + color);
+    // console.log("color changed to " + color);
     ctx.strokeStyle = color;
 }
 
@@ -79,11 +80,6 @@ console.log("当前使用的设备是手机")
         last = [x, y]
     }
     canvas.ontouchmove = (e) => {
-        if (isfrist) {
-            let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            draw_history.push(now_pic);
-            isfrist = false;
-        }
         // 手机上可能不止一个手指
         let x = e.touches[0].clientX;
         let y = e.touches[0].clientY;
@@ -92,7 +88,15 @@ console.log("当前使用的设备是手机")
     }
     canvas.ontouchend = (e) => {
         // 手机上可能不止一个手指
-        isfrist = true;
+        let now_pic = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        if (draw_history.length > now_index) {
+            draw_history.splice(now_index, draw_history.length - now_index);
+        }
+        draw_history.push(now_pic);
+        // console.log("draw_history.lenh: " + draw_history);
+        // console.log("draw_history.length: " + draw_history.length);
+        index_history.push(now_index);
+        now_index++;
         // 手机端容易误触，不要这个了
         // redo_history.splice(0,redo_history.length);
     }
@@ -117,7 +121,7 @@ canvas.onmousemove = (e) => {
         draw_history.push(now_pic);
         if (index_history.length !== 0) {
             index_history.push(now_index);
-            console.log("+++++");
+            // console.log("+++++");
             now_index++;
         }
         else {
