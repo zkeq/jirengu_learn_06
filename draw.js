@@ -72,11 +72,20 @@ console.log("当前使用的设备是手机")
         last = [x, y]
     }
     canvas.ontouchmove = (e) => {
+        if (isfrist) {
+            draw_history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            isfrist = false;
+        }
         // 手机上可能不止一个手指
         let x = e.touches[0].clientX;
         let y = e.touches[0].clientY;
         drawLine(last[0], last[1], x, y);
         last = [x, y]
+    }
+    canvas.ontouchend = (e) => {
+        // 手机上可能不止一个手指
+        isfrist = true;
+        redo_history.splice(0,redo_history.length);
     }
 
 } else {
@@ -108,6 +117,7 @@ canvas.onmousemove = (e) => {
 canvas.onmouseup = () => {
     painting = false;
     isfrist = true;
+    redo_history.splice(0,redo_history.length);
 };
 
 }
